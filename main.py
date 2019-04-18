@@ -2,6 +2,7 @@ import json
 import sys
 import argparse
 import requests
+import random
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-nc', '--no-color', '--no-colour', dest="color", help="disable colors", action="store_false", default=True)
@@ -9,10 +10,17 @@ parser.add_argument('-u', '--user', dest="username",help="select user", required
 args = parser.parse_args()
 
 if args.color:
-    green = "\033[1;92m"
+    color = random.choice([
+            "\033[1;91m",
+            "\033[1;92m",
+            "\033[1;93m",
+            "\033[1;94m",
+            "\033[1;95m", 
+            "\033[1;96m"
+    ])
     reset = "\033[0m"
 else:
-    green = ""
+    color = ""
     reset = ""
 
 repos = requests.get(f"https://api.github.com/users/{args.username}/repos").json()
@@ -70,10 +78,10 @@ for currentLanguage in languages:
         moreUsedLanguage[0] = languages[currentLanguage]["name"]
         moreUsedLanguage[1] = languages[currentLanguage]["score"]
     
-print(f"Private repositories : {green}{privateRepoNumber}{reset} ( {green}{round(privateRepoNumber*100/repoNumber,2)}%{reset} )")
-print(f"More stared repositories : {green}{moreStared[0]}{reset} with {green}{moreStared[1]}{reset} stars")
-print(f"Total stars : {green}{totalStars}{reset} ( {green}{round(totalStars/repoNumber, 2)}{reset} av )")
-print(f"More forked repositories : {green}{moreForked[0]}{reset} with {green}{moreForked[1]}{reset} forks")
-print(f"Total forked : {green}{totalForks}{reset} ( {green}{round(totalForks/repoNumber, 2)}{reset} av )")
-print(f"License prefer : {green}{moreUsedLicense[0]}{reset} with {green}{moreUsedLicense[1]}{reset} repos ( {green}{round(moreUsedLicense[1]*100/repoNumber, 2)}%{reset} )")
-print(f"Language prefer : {green}{moreUsedLanguage[0]}{reset} with {green}{moreUsedLanguage[1]}{reset} repos ( {green}{round(moreUsedLanguage[1]*100/repoNumber, 2)}%{reset} )")
+print(f"Private repositories : {color}{privateRepoNumber}{reset} ( {color}{round(privateRepoNumber*100/repoNumber,2)}%{reset} )")
+print(f"More stared repositories : {color}{moreStared[0]}{reset} with {color}{moreStared[1]}{reset} stars")
+print(f"Total stars : {color}{totalStars}{reset} ( {color}{round(totalStars/repoNumber, 2)}{reset} av )")
+print(f"More forked repositories : {color}{moreForked[0]}{reset} with {color}{moreForked[1]}{reset} forks")
+print(f"Total forked : {color}{totalForks}{reset} ( {color}{round(totalForks/repoNumber, 2)}{reset} av )")
+print(f"License prefer : {color}{moreUsedLicense[0]}{reset} with {color}{moreUsedLicense[1]}{reset} repos ( {color}{round(moreUsedLicense[1]*100/repoNumber, 2)}%{reset} )")
+print(f"Language prefer : {color}{moreUsedLanguage[0]}{reset} with {color}{moreUsedLanguage[1]}{reset} repos ( {color}{round(moreUsedLanguage[1]*100/repoNumber, 2)}%{reset} )")
